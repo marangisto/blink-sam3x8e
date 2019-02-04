@@ -2,25 +2,31 @@
 #![no_main]
 
 extern crate panic_halt;
-extern crate sam3x;
 
 use cortex_m_rt::entry;
-use sam3x::hal::peripherals::{Peripheral};
-use sam3x::hal::rtt::{init_timer, wait_ms};
-use sam3x::drivers::led::{Led};
+use sam3x8e::{rtt, piob};
+
+pub fn delay_ms(x: u32) {
+    unsafe {
+        let y = (*rtt()).vr.read() + x;
+        // FIXME: deal with overflow!
+        while (*rtt()).vr.read() < y {}
+    }
+}
 
 #[entry]
 fn main() -> ! {
-    init_timer();
-    let led = Led::connect(Peripheral::PioB, 27).expect("illegal led pin");
+    unsafe { (*piob()).per.write(1 << 27) }
+    unsafe { (*piob()).oer.write(1 << 27) }
+    unsafe { (*rtt()).mr.write(32768 / 1000) }
     let mut on = true;
 
     loop {
-        wait_ms(50);
+        delay_ms(250);
         if on {
-            led.off()
+            unsafe { (*piob()).codr.write(1 << 27) }
         } else {
-            led.on()
+            unsafe { (*piob()).sodr.write(1 << 27) }
         }
         on = !on;
     }
