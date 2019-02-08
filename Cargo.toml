@@ -2,7 +2,7 @@
 authors = ["Bengt Marten Agren <marangisto@me.com>"]
 edition = "2018"
 readme = "README.md"
-name = "rusty-blink"
+name = "blink-sam3x8e"
 version = "0.1.0"
 
 [dependencies]
@@ -12,7 +12,7 @@ sam3x8e = { path = "../sam3x8e" }
 
 # this lets you use `cargo fix`!
 [[bin]]
-name = "rusty-blink"
+name = "blink-sam3x8e"
 test = false
 bench = false
 

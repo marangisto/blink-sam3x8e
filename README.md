@@ -1,4 +1,4 @@
-# `rusty-blink`
+# `blink-sam3x8e`
 
 This project is a minimal setup to run blinky in Rust on an ARM MCU.
 
